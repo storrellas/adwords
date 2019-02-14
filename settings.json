@@ -1,0 +1,10 @@
+{
+  "maximum_bots": 2,
+  "memory_usage": 70,
+  "bot_job_interval": 30,
+  "wait": 3,
+  "proxy_filename": "proxies.txt",
+  "bank_account_filename": "bank_accounts.txt",
+  "google_account_filename": "google_accounts.txt",
+  "swift_filename": "swifts.txt"
+}

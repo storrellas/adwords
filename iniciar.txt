@@ -1,0 +1,4 @@
+cd C:\Users\Monxu\Desktop\Google Adwords bo
+pip install -e .
+gbank -main
+

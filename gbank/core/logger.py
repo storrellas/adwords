@@ -23,7 +23,8 @@ class DBHandler(logging.Handler):
         self.db = Database()
 
     def emit(self, record: logging.LogRecord):
-        logs: str = ''
+        #logs: str = ''
+        logs = ''
 
         # get exists logs
         already_exists = self.db.get_first(self._table, {'id': self._column_id})[self._column_name]

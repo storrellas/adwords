@@ -1,8 +1,0 @@
-README.md
-setup.py
-gbank.egg-info/PKG-INFO
-gbank.egg-info/SOURCES.txt
-gbank.egg-info/dependency_links.txt
-gbank.egg-info/entry_points.txt
-gbank.egg-info/requires.txt
-gbank.egg-info/top_level.txt

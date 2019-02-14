@@ -17,7 +17,8 @@ from sys import argv
 class ArgumentParser(argParse):
 
     def __init__(self, func: list, *args, **kwargs):
-        self._out: Any = None
+        #self._out: Any = None
+        self._out = None
 
         self.funcs = func
 

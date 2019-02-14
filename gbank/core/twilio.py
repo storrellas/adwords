@@ -17,7 +17,8 @@ class Client(TwilioClient):
 
 class Twilio(BaseClass):
 
-    client: TwilioClient = Client()
+    #client: TwilioClient = Client()
+    client = Client()
 
     def __init__(self):
         super().__init__()

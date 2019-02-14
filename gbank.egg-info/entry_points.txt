@@ -1,3 +1,0 @@
-[console_scripts]
-gbank = gbank.cli.main:main
-

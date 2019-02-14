@@ -9,9 +9,9 @@ install_requires = open('requirements.txt', 'r').read()
 setup(
     name='gbank',
     version='0.1',
-    author_name='',
-    author_email='',
-    package=find_packages(exclude=["*.tests", "*.tests.*", "tests.*", "tests"]),
+    author='storrellas',
+    author_email='storrellas@gmail.com',
+    packages=find_packages(exclude=["*.tests", "*.tests.*", "tests.*", "tests"]),
     install_requires=install_requires,
     entry_points={
         'console_scripts': [

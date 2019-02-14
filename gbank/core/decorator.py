@@ -41,7 +41,8 @@ def selenium_decorator(obj):
                 attr = Constant.WEBDRIVER_ATTR_NAME
                 if hasattr(arg, attr) and isinstance(e, WebDriverException):
                     # take screen shot.
-                    driver: BaseSelenium = arg
+                    #driver: BaseSelenium = arg
+                    driver = arg
                     path = take_screenshot(driver)
                     # add screen shot to log.
                     e.msg += " Screenshot: " + path

@@ -27,7 +27,8 @@ class CommandLineHandler(BaseClass):
         if type(arguments) is str:
             arguments = [arguments]
 
-        self.data: dict = {}
+        #self.data: dict = {}
+        self.data = {}
         self.arg_parser = ArgumentParser(arguments)
 
     @classmethod

@@ -1,3 +1,6 @@
+import sys
+sys.path.append('/home/vagrant/workspace/adwords')
+
 from gbank.cli.google import GoogleMain
 from gbank.core.cli.cli_handler import CommandLineHandler
 from gbank.core.decorator import look_for_all
@@ -12,6 +15,8 @@ class CommandLine(CommandLineHandler):
 
     def run(self):
         self.arg_parser.parse_args()
+
+        print(self.arg_parser)
 
         output = self.arg_parser.get_program_out()
         self.put_out(output)

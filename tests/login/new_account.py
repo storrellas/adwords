@@ -41,19 +41,21 @@ with open("googlenoves.txt") as tf:
         passnext.click()
         time.sleep(2)
 
-        #verifica email
-        recover = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH,'//div[contains(text(),"Confirma tu")]')))
-        time.sleep(1)
-        recover.click()
-        time.sleep(1)
+        # #verifica email
+        # recover = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH,'//div[contains(text(),"Confirma tu")]')))
+        # time.sleep(1)
+        # recover.click()
+        # time.sleep(1)
+        #
+        # emailrecover = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH,'//input[@id = "identifierId"]')))
+        # emailrecover.send_keys(recov)
+        #
+        # time.sleep(1)
+        # nextB = WebDriverWait(driver, 30).until(EC.element_to_be_clickable((By.XPATH,'//span[text()="Siguiente"]')))
+        # nextB.click()
+        # time.sleep(5)
 
-        emailrecover = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH,'//input[@id = "identifierId"]')))
-        emailrecover.send_keys(recov)
 
-        time.sleep(1)
-        nextB = WebDriverWait(driver, 30).until(EC.element_to_be_clickable((By.XPATH,'//span[text()="Siguiente"]')))
-        nextB.click()
-        time.sleep(5)
 
         #Proteger tu cuenta
         try:
@@ -238,8 +240,9 @@ with open("googlenoves.txt") as tf:
 
 
 
-print("Linia 219")
-if count == len(gAccounts):
+
+#if count == len(gAccounts):
+if True:
     print('\nAccounts have been removed from all gmail accounts')
     driver.quit()
 

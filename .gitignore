@@ -4,3 +4,4 @@ dist/*
 build/*
 data/*
 *googlenoves.txt
+*googlenoves_csv.txt

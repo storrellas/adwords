@@ -25,67 +25,85 @@ count = 0
 # )
 
 logger = utils.get_logger()
-logger.info("Starting logger")
+driver = 0
 
-#driver = webdriver.Firefox()
+def driver_setup():
+    global driver
+    options = webdriver.ChromeOptions()
+    #driver = webdriver.Chrome(options=options)
+    driver = webdriver.Remote(
+        command_executor = 'http://192.168.56.1:9515',
+        desired_capabilities=options.to_capabilities()
+    )
+
+def driver_teardown():
+    global driver
+    logger.info("Terminating session")
+    driver.quit()
+
+def login(email, password):
+    global driver
+
+    logger.info("Performing login ...")
+    loginF = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH,'//input[@id = "identifierId"]')))
+    loginF.send_keys(email)
+    nextB = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH,'//span[text()="Siguiente"]')))
+    nextB.click()
+    time.sleep(1)
+    passwordF = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, '//input[@name="password"]')))
+    passwordF.send_keys(password)
+    passnext = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH,'//span[text()="Siguiente"]')))
+    passnext.click()
+    time.sleep(20)
+
+    # Verfica que eres tú
+    logger.info("Checking identity ...")
+    try:
+        item = WebDriverWait(driver, 40).until(EC.presence_of_element_located((By.XPATH,'//h1[@id="headingText"]')))
+        if item.text == "Verifica que eres tú":
+            recover = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH,'//div[contains(text(),"Confirma tu")]')))
+            time.sleep(1)
+            recover.click()
+            time.sleep(1)
+
+            emailrecover = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH,'//input[@id = "identifierId"]')))
+            emailrecover.send_keys(recov)
+
+            time.sleep(1)
+            nextB = WebDriverWait(driver, 30).until(EC.element_to_be_clickable((By.XPATH,'//span[text()="Siguiente"]')))
+            nextB.click()
+            time.sleep(5)
+    except Exception as e:
+        logger.error("Not found 'Verifica que eres tu'")
+        print(e)
+
+
+if __name__ == "__main__":
+
+    logger.info("Starting logger")
+
+    # Setup driver
+    driver_setup()
+
+    line = "mckinnonj748@gmail.com,e75xdzEeP3,kelleyu1m7u@outlook.com"
+    email = line.split(',')[0]
+    password = line.split(',')[1]
+    recov = line.split(',')[2]
+
+    logger.info("Generating for " + email)
+
+    driver.get("https://ads.google.com/aw/billing/paymentmethods")
+
+    # Login
+    login(email, password)
 
 
 
-options = webdriver.ChromeOptions()
-#driver = webdriver.Chrome(options=options)
-
-# driver = webdriver.Remote(
-#     command_executor = 'http://127.0.0.1:9515',
-#     desired_capabilities = {
-#         'browserName': 'chrome',
-#     },
-# )
-
-# driver = webdriver.Remote(
-#     command_executor = 'http://172.23.32.1:9515',
-#     desired_capabilities = {
-#         'browserName': 'chrome',
-#     },
-# )
-
-driver = webdriver.Remote(
-    command_executor = 'http://192.168.56.1:9515',
-    desired_capabilities=options.to_capabilities()
-)
-
-email = "breedlovechadd0@gmail.com"
-passw = "wxkzVBerfz"
-recov = "jakobhbhnhk@hotmail.com"
-
-logger.info("Generating for " + email)
-
-driver.get("https://ads.google.com/aw/billing/paymentmethods")
-
-# Login
-loginF = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH,'//input[@id = "identifierId"]')))
-loginF.send_keys(email)
-nextB = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH,'//span[text()="Siguiente"]')))
-nextB.click()
-time.sleep(1)
-passwordF = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, '//input[@name="password"]')))
-passwordF.send_keys(passw)
-passnext = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH,'//span[text()="Siguiente"]')))
-passnext.click()
-time.sleep(20)
-
-# Verfica que eres tú
-try:
-    item = WebDriverWait(driver, 40).until(EC.presence_of_element_located((By.XPATH,'//h1[@id="headingText"]')))
-    print(item.text)
-    if item.text == "Verifica que eres tú":
-        print("Page verifica que eres tu")
-except:
-    pass
-
-logger.info("Remote control")
-logger.info('\nAccounts have been removed from all gmail accounts')
-driver.quit()
-sys.exit(0)
+    # logger.info("Remote control")
+    # logger.info('\nAccounts have been removed from all gmail accounts')
+    # driver.quit()
+    driver_teardown()
+    sys.exit(0)
 
 #####################
 

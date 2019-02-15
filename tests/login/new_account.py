@@ -11,12 +11,34 @@ import time
 import datetime
 import json
 
+import utils
+
 gAccounts = []
 count = 0
 
 options = webdriver.ChromeOptions()
-driver = webdriver.Chrome(options=options)
+#driver = webdriver.Chrome(options=options)
 
+# driver = webdriver.Remote(
+#     command_executor = 'http://127.0.0.1:9515',
+#     desired_capabilities = {
+#         'browserName': 'chrome',
+#     },
+# )
+
+driver = webdriver.Remote(
+    command_executor = 'http://172.23.32.1:9515',
+    desired_capabilities = {
+        'browserName': 'chrome',
+    },
+)
+
+# driver = webdriver.Remote(
+#     'http://127.0.0.1:4444/wd/hub',
+#     options.to_capabilities()
+# )
+
+logger = utils.get_logger()
 
 #driver = webdriver.Firefox()
 
@@ -55,7 +77,7 @@ with open("googlenoves.txt") as tf:
         # nextB.click()
         # time.sleep(5)
 
-
+        logger.info("Logged Ok!")
 
         #Proteger tu cuenta
         try:

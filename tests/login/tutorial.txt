@@ -1,0 +1,8 @@
+1- login (això ja ho fa el script actual)
+2-Add email recover  (això ja ho fa el script actual)
+3-Bot has to go to this url: https://ads.google.com/um/Welcome/Home?a=1&sourceid=awo&subid=es-ww-di-g-aw-a-awhp_1!o2&exs=1&authuser=0&sf=or&clickid=sn-13c-or-es-11102018
+4- add this website for example: www.sport.es
+5- create the add, with any letters
+6-fullfill name (Ramon Lloveras ) and adress (Carrer Mestra Numancia)
+7-Add first bank account
+8- Add the other 7 bank accounts (això ja ho fa el script actual) 

@@ -53,9 +53,41 @@ driver = webdriver.Remote(
     desired_capabilities=options.to_capabilities()
 )
 
-# logger.info("Remote control")
-#
-# sys.exit(0)
+email = "breedlovechadd0@gmail.com"
+passw = "wxkzVBerfz"
+recov = "jakobhbhnhk@hotmail.com"
+
+logger.info("Generating for " + email)
+
+driver.get("https://ads.google.com/aw/billing/paymentmethods")
+
+# Login
+loginF = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH,'//input[@id = "identifierId"]')))
+loginF.send_keys(email)
+nextB = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH,'//span[text()="Siguiente"]')))
+nextB.click()
+time.sleep(1)
+passwordF = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, '//input[@name="password"]')))
+passwordF.send_keys(passw)
+passnext = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH,'//span[text()="Siguiente"]')))
+passnext.click()
+time.sleep(20)
+
+# Verfica que eres tú
+try:
+    item = WebDriverWait(driver, 40).until(EC.presence_of_element_located((By.XPATH,'//h1[@id="headingText"]')))
+    print(item.text)
+    if item.text == "Verifica que eres tú":
+        print("Page verifica que eres tu")
+except:
+    pass
+
+logger.info("Remote control")
+logger.info('\nAccounts have been removed from all gmail accounts')
+driver.quit()
+sys.exit(0)
+
+#####################
 
 with open("./googlenoves.txt") as tf:
 

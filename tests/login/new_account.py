@@ -1,6 +1,7 @@
 import selenium
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
@@ -54,12 +55,12 @@ def login(email, password):
     passwordF.send_keys(password)
     passnext = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH,'//span[text()="Siguiente"]')))
     passnext.click()
-    time.sleep(20)
+    time.sleep(5)
 
     # Verfica que eres tú
     logger.info("Checking identity ...")
     try:
-        item = WebDriverWait(driver, 40).until(EC.presence_of_element_located((By.XPATH,'//h1[@id="headingText"]')))
+        item = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH,'//h1[@id="headingText"]')))
         if item.text == "Verifica que eres tú":
             recover = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH,'//div[contains(text(),"Confirma tu")]')))
             time.sleep(1)
@@ -72,10 +73,10 @@ def login(email, password):
             time.sleep(1)
             nextB = WebDriverWait(driver, 30).until(EC.element_to_be_clickable((By.XPATH,'//span[text()="Siguiente"]')))
             nextB.click()
-            time.sleep(5)
+            time.sleep(20)
     except Exception as e:
         logger.error("Not found 'Verifica que eres tu'")
-        print(e)
+        #print(e)
 
 
 if __name__ == "__main__":
@@ -85,7 +86,7 @@ if __name__ == "__main__":
     # Setup driver
     driver_setup()
 
-    line = "mckinnonj748@gmail.com,e75xdzEeP3,kelleyu1m7u@outlook.com"
+    line = "hillcoatbarnabas@gmail.com,GwpdH95qQE,patmof4x@outlook.com"
     email = line.split(',')[0]
     password = line.split(',')[1]
     recov = line.split(',')[2]
@@ -97,11 +98,36 @@ if __name__ == "__main__":
     # Login
     login(email, password)
 
+    # Select target
+    try:
+        item = WebDriverWait(driver, 40).until(EC.presence_of_element_located((By.CSS_SELECTOR,'h2.title')))
+        if 'advertising goal' in item.text:
+            logger.info("Located advertising goal")
+            item_goal = driver.find_element_by_css_selector('material-expansionpanel-set material-expansionpanel:nth-child(3)')
 
+            # Unfolding menu
+            logger.info("Unfolding menu ...")
+            item = item_goal.find_element_by_css_selector('material-icon')
+            item.click()
+            item = item_goal.find_element_by_css_selector('div.toolbelt material-button')
 
-    # logger.info("Remote control")
-    # logger.info('\nAccounts have been removed from all gmail accounts')
-    # driver.quit()
+            hover = ActionChains(driver).move_to_element(item)
+            hover.perform()
+            time.sleep(2)
+            print(item.get_attribute('outerHTML'))
+            item.click()
+
+    except Exception as e:
+        logger.error("Not found 'Verifica que eres tu'")
+        print(e)
+    # nextB = WebDriverWait(driver, 30).until(EC.element_to_be_clickable((By.XPATH,'//span[text()="Siguiente"]')))
+    # nextB.click()
+
+    # Wait for some time
+    logger.info("About to abort ...")
+    time.sleep(20)
+
+    # Tear down
     driver_teardown()
     sys.exit(0)
 

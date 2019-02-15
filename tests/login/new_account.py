@@ -12,9 +12,24 @@ import datetime
 import json
 
 import utils
+import sys
 
 gAccounts = []
 count = 0
+
+
+
+# driver = webdriver.Remote(
+#     'http://127.0.0.1:4444/wd/hub',
+#     options.to_capabilities()
+# )
+
+logger = utils.get_logger()
+logger.info("Starting logger")
+
+#driver = webdriver.Firefox()
+
+
 
 options = webdriver.ChromeOptions()
 #driver = webdriver.Chrome(options=options)
@@ -26,29 +41,33 @@ options = webdriver.ChromeOptions()
 #     },
 # )
 
-driver = webdriver.Remote(
-    command_executor = 'http://172.23.32.1:9515',
-    desired_capabilities = {
-        'browserName': 'chrome',
-    },
-)
-
 # driver = webdriver.Remote(
-#     'http://127.0.0.1:4444/wd/hub',
-#     options.to_capabilities()
+#     command_executor = 'http://172.23.32.1:9515',
+#     desired_capabilities = {
+#         'browserName': 'chrome',
+#     },
 # )
 
-logger = utils.get_logger()
+driver = webdriver.Remote(
+    command_executor = 'http://192.168.56.1:9515',
+    desired_capabilities=options.to_capabilities()
+)
 
-#driver = webdriver.Firefox()
+# logger.info("Remote control")
+#
+# sys.exit(0)
 
-with open("googlenoves.txt") as tf:
+with open("./googlenoves.txt") as tf:
+
+    logger.info("Read file")
 
     for line in tf:
         gAccounts = line.split()
         email = gAccounts[0]
         passw = gAccounts[1]
         recov = gAccounts[2]
+
+        logger.info("Generating for " + email)
 
         driver.get("https://ads.google.com/aw/billing/paymentmethods")
 

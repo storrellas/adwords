@@ -138,6 +138,22 @@ def describe_your_business():
         print(e)
 
 
+def customer_location():
+    global driver
+
+    inner_text = 'Where are your customers?'
+    try:
+        # Check whether proper page
+        check_page('h2.title', inner_text)
+
+        item = driver.find_element_by_css_selector('material-button.btn-yes')
+        item.click()
+
+    except Exception as e:
+        logger.error("Not found '" + inner_text + "'")
+        print(e)
+
+
 if __name__ == "__main__":
 
     logger.info("Starting logger")
@@ -168,6 +184,13 @@ if __name__ == "__main__":
     logger.info("describe your business ...")
     describe_your_business()
     logger.info("DONE!")
+
+    # Customer location
+    logger.info("describe your business ...")
+    customer_location()
+    logger.info("DONE!")
+
+
 
     # Wait for some time
     logger.info("About to abort ...")

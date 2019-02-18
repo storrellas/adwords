@@ -45,7 +45,6 @@ def driver_teardown():
 def login(email, password):
     global driver
 
-    logger.info("Performing login ...")
     loginF = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH,'//input[@id = "identifierId"]')))
     loginF.send_keys(email)
     nextB = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH,'//span[text()="Siguiente"]')))
@@ -78,6 +77,88 @@ def login(email, password):
         logger.error("Not found 'Verifica que eres tu'")
         #print(e)
 
+def advertising_goal():
+    global driver
+
+    try:
+        item = WebDriverWait(driver, 40).until(EC.presence_of_element_located((By.CSS_SELECTOR,'h2.title')))
+        if 'advertising goal' in item.text:
+            logger.info("Located advertising goal")
+            item_goal = driver.find_element_by_css_selector('material-expansionpanel-set material-expansionpanel:nth-child(3)')
+
+            # Unfolding menu
+            logger.info("Unfolding menu ...")
+            item = item_goal.find_element_by_css_selector('material-icon')
+            item.click()
+
+            # Click on 'Pick Goal' (Hover required)
+            item = item_goal.find_element_by_css_selector('div.toolbelt material-button')
+            hover = ActionChains(driver).move_to_element(item)
+            hover.perform()
+            time.sleep(2)
+
+            item.click()
+
+    except Exception as e:
+        logger.error("Not found 'Verifica que eres tu'")
+        print(e)
+
+def check_page(locator, inner_text, callback):
+    item = WebDriverWait(driver, 40).until(EC.presence_of_element_located((By.CSS_SELECTOR,locator)))
+    if 'Describe your business' in item.text:
+        logger.info("Located " + inner_text)
+        if callback:
+            callback()
+        # item_goal = driver.find_element_by_css_selector('material-expansionpanel-set material-expansionpanel:nth-child(3)')
+        #
+        # # Unfolding menu
+        # logger.info("Unfolding menu ...")
+        # item = item_goal.find_element_by_css_selector('material-icon')
+        # item.click()
+        #
+        # # Click on 'Pick Goal' (Hover required)
+        # item = item_goal.find_element_by_css_selector('div.toolbelt material-button')
+        # hover = ActionChains(driver).move_to_element(item)
+        # hover.perform()
+        # time.sleep(2)
+        #
+        # item.click()
+
+def describe_your_business_callback():
+    logger.info("Located describe your business")
+
+def describe_your_business():
+    global driver
+
+    try:
+        check_page('h2.title', 'Describe your business', describe_your_business_callback)
+    except Exception as e:
+        logger.error("Not found 'Verifica que eres tu'")
+        print(e)
+    """
+    try:
+        item = WebDriverWait(driver, 40).until(EC.presence_of_element_located((By.CSS_SELECTOR,'h2.title')))
+        if 'Describe your business' in item.text:
+            logger.info("Located describe your business")
+            # item_goal = driver.find_element_by_css_selector('material-expansionpanel-set material-expansionpanel:nth-child(3)')
+            #
+            # # Unfolding menu
+            # logger.info("Unfolding menu ...")
+            # item = item_goal.find_element_by_css_selector('material-icon')
+            # item.click()
+            #
+            # # Click on 'Pick Goal' (Hover required)
+            # item = item_goal.find_element_by_css_selector('div.toolbelt material-button')
+            # hover = ActionChains(driver).move_to_element(item)
+            # hover.perform()
+            # time.sleep(2)
+            #
+            # item.click()
+
+    except Exception as e:
+        logger.error("Not found 'Verifica que eres tu'")
+        print(e)
+    """
 
 if __name__ == "__main__":
 
@@ -96,32 +177,17 @@ if __name__ == "__main__":
     driver.get("https://ads.google.com/aw/billing/paymentmethods")
 
     # Login
+    logger.info("Performing login ...")
     login(email, password)
+    logger.info("DONE!")
 
     # Select target
-    try:
-        item = WebDriverWait(driver, 40).until(EC.presence_of_element_located((By.CSS_SELECTOR,'h2.title')))
-        if 'advertising goal' in item.text:
-            logger.info("Located advertising goal")
-            item_goal = driver.find_element_by_css_selector('material-expansionpanel-set material-expansionpanel:nth-child(3)')
+    logger.info("advertising goal ...")
+    advertising_goal()
+    logger.info("DONE!")
 
-            # Unfolding menu
-            logger.info("Unfolding menu ...")
-            item = item_goal.find_element_by_css_selector('material-icon')
-            item.click()
-            item = item_goal.find_element_by_css_selector('div.toolbelt material-button')
-
-            hover = ActionChains(driver).move_to_element(item)
-            hover.perform()
-            time.sleep(2)
-            print(item.get_attribute('outerHTML'))
-            item.click()
-
-    except Exception as e:
-        logger.error("Not found 'Verifica que eres tu'")
-        print(e)
-    # nextB = WebDriverWait(driver, 30).until(EC.element_to_be_clickable((By.XPATH,'//span[text()="Siguiente"]')))
-    # nextB.click()
+    # Describe your business
+    describe_your_business()
 
     # Wait for some time
     logger.info("About to abort ...")

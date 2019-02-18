@@ -42,6 +42,29 @@ def driver_teardown():
     logger.info("Terminating session")
     driver.quit()
 
+
+def check_page(locator, inner_text):
+    item = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.CSS_SELECTOR,locator)))
+    if inner_text in item.text:
+        logger.info("Located '" + inner_text + "'")
+    else:
+        raise Exception('Page html item not found')
+
+def identity_implementation():
+    logger.info("identity_implementation ")
+    recover = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH,'//div[contains(text(),"Confirma tu")]')))
+    time.sleep(1)
+    recover.click()
+    time.sleep(1)
+
+    emailrecover = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH,'//input[@id = "identifierId"]')))
+    emailrecover.send_keys(recov)
+
+    time.sleep(1)
+    nextB = WebDriverWait(driver, 30).until(EC.element_to_be_clickable((By.XPATH,'//span[text()="Siguiente"]')))
+    nextB.click()
+    time.sleep(20)
+
 def login(email, password):
     global driver
 
@@ -59,20 +82,8 @@ def login(email, password):
     # Verfica que eres tú
     logger.info("Checking identity ...")
     try:
-        item = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH,'//h1[@id="headingText"]')))
-        if item.text == "Verifica que eres tú":
-            recover = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH,'//div[contains(text(),"Confirma tu")]')))
-            time.sleep(1)
-            recover.click()
-            time.sleep(1)
-
-            emailrecover = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH,'//input[@id = "identifierId"]')))
-            emailrecover.send_keys(recov)
-
-            time.sleep(1)
-            nextB = WebDriverWait(driver, 30).until(EC.element_to_be_clickable((By.XPATH,'//span[text()="Siguiente"]')))
-            nextB.click()
-            time.sleep(20)
+        check_page('h1#headingText', 'Verifica que eres')
+        identity_implementation()
     except Exception as e:
         logger.error("Not found 'Verifica que eres tu'")
         #print(e)
@@ -81,84 +92,49 @@ def advertising_goal():
     global driver
 
     try:
-        item = WebDriverWait(driver, 40).until(EC.presence_of_element_located((By.CSS_SELECTOR,'h2.title')))
-        if 'advertising goal' in item.text:
-            logger.info("Located advertising goal")
-            item_goal = driver.find_element_by_css_selector('material-expansionpanel-set material-expansionpanel:nth-child(3)')
+        check_page('h2.title', 'advertising goal')
 
-            # Unfolding menu
-            logger.info("Unfolding menu ...")
-            item = item_goal.find_element_by_css_selector('material-icon')
-            item.click()
+        logger.info("Located advertising goal")
+        item_goal = driver.find_element_by_css_selector('material-expansionpanel-set material-expansionpanel:nth-child(3)')
 
-            # Click on 'Pick Goal' (Hover required)
-            item = item_goal.find_element_by_css_selector('div.toolbelt material-button')
-            hover = ActionChains(driver).move_to_element(item)
-            hover.perform()
-            time.sleep(2)
+        # Unfolding menu
+        logger.info("Unfolding menu ...")
+        item = item_goal.find_element_by_css_selector('material-icon')
+        item.click()
 
-            item.click()
+        # Click on 'Pick Goal' (Hover required)
+        item = item_goal.find_element_by_css_selector('div.toolbelt material-button')
+        hover = ActionChains(driver).move_to_element(item)
+        hover.perform()
+        time.sleep(2)
+
+        item.click()
 
     except Exception as e:
         logger.error("Not found 'Verifica que eres tu'")
         print(e)
 
-def check_page(locator, inner_text, callback):
-    item = WebDriverWait(driver, 40).until(EC.presence_of_element_located((By.CSS_SELECTOR,locator)))
-    if 'Describe your business' in item.text:
-        logger.info("Located " + inner_text)
-        if callback:
-            callback()
-        # item_goal = driver.find_element_by_css_selector('material-expansionpanel-set material-expansionpanel:nth-child(3)')
-        #
-        # # Unfolding menu
-        # logger.info("Unfolding menu ...")
-        # item = item_goal.find_element_by_css_selector('material-icon')
-        # item.click()
-        #
-        # # Click on 'Pick Goal' (Hover required)
-        # item = item_goal.find_element_by_css_selector('div.toolbelt material-button')
-        # hover = ActionChains(driver).move_to_element(item)
-        # hover.perform()
-        # time.sleep(2)
-        #
-        # item.click()
 
-def describe_your_business_callback():
-    logger.info("Located describe your business")
 
 def describe_your_business():
     global driver
 
+    inner_text = 'Describe your business'
     try:
-        check_page('h2.title', 'Describe your business', describe_your_business_callback)
-    except Exception as e:
-        logger.error("Not found 'Verifica que eres tu'")
-        print(e)
-    """
-    try:
-        item = WebDriverWait(driver, 40).until(EC.presence_of_element_located((By.CSS_SELECTOR,'h2.title')))
-        if 'Describe your business' in item.text:
-            logger.info("Located describe your business")
-            # item_goal = driver.find_element_by_css_selector('material-expansionpanel-set material-expansionpanel:nth-child(3)')
-            #
-            # # Unfolding menu
-            # logger.info("Unfolding menu ...")
-            # item = item_goal.find_element_by_css_selector('material-icon')
-            # item.click()
-            #
-            # # Click on 'Pick Goal' (Hover required)
-            # item = item_goal.find_element_by_css_selector('div.toolbelt material-button')
-            # hover = ActionChains(driver).move_to_element(item)
-            # hover.perform()
-            # time.sleep(2)
-            #
-            # item.click()
+        # Check whether proper page
+        check_page('h2.title', inner_text)
+
+        logger.info("Located '" + inner_text + "'")
+        item = driver.find_element_by_css_selector('material-input .input')
+        item.send_keys("Sport")
+
+        print(item.get_attribute('outerHTML'))
+
 
     except Exception as e:
-        logger.error("Not found 'Verifica que eres tu'")
+        logger.error("Not found '" + inner_text + "'")
         print(e)
-    """
+
 
 if __name__ == "__main__":
 
@@ -167,7 +143,7 @@ if __name__ == "__main__":
     # Setup driver
     driver_setup()
 
-    line = "hillcoatbarnabas@gmail.com,GwpdH95qQE,patmof4x@outlook.com"
+    line = "dralli060@gmail.com,hnAWp1C4nj,jodi414l0l@hotmail.com"
     email = line.split(',')[0]
     password = line.split(',')[1]
     recov = line.split(',')[2]
@@ -187,7 +163,9 @@ if __name__ == "__main__":
     logger.info("DONE!")
 
     # Describe your business
+    logger.info("describe your business ...")
     describe_your_business()
+    logger.info("DONE!")
 
     # Wait for some time
     logger.info("About to abort ...")

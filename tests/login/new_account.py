@@ -124,12 +124,14 @@ def describe_your_business():
         # Check whether proper page
         check_page('h2.title', inner_text)
 
-        logger.info("Located '" + inner_text + "'")
-        item = driver.find_element_by_css_selector('material-input .input')
+        item = driver.find_element_by_css_selector('material-input.business-name .input')
         item.send_keys("Sport")
 
-        print(item.get_attribute('outerHTML'))
+        item = driver.find_element_by_css_selector('material-input.business-website .input')
+        item.send_keys("www.sport.es")
 
+        item = driver.find_element_by_css_selector('material-button.btn-yes')
+        item.click()
 
     except Exception as e:
         logger.error("Not found '" + inner_text + "'")
